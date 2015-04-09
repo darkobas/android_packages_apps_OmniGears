@@ -83,7 +83,9 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
     private static final String BUTTON_HOME_ANSWERS_CALL = "button_home_answers_call";
 //    private static final String BUTTON_VOLUME_DEFAULT = "button_volume_default_screen";
 //    private static final String BUTTON_VOLUME_MUSIC_CONTROL = "button_volume_music_control";
-//    private static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
+    private static final String VOLBTN_CURSOR_CONTROL = "volbtn_cursor_control";
+    private static final String KEY_VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
+
     private static final String SWAP_VOLUME_BUTTONS = "swap_volume_buttons";
 //    private static final String CATEGORY_HEADSETHOOK = "button_headsethook";
 //    private static final String BUTTON_HEADSETHOOK_LAUNCH_VOICE = "button_headsethook_launch_voice";
@@ -134,7 +136,7 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
     private CheckBoxPreference mHomeAnswerCall;
 //    private CheckBoxPreference mVolumeMusicControl;
     private CheckBoxPreference mSwapVolumeButtons;
-//    private ListPreference mVolumeKeyCursorControl;
+    private ListPreference mVolumeKeyCursorControl;
     private SwitchPreference mEnableCustomBindings;
     private ListPreference mBackPressAction;
     private ListPreference mBackLongPressAction;
@@ -205,15 +207,14 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
             mSwapVolumeButtons = (CheckBoxPreference) findPreference(SWAP_VOLUME_BUTTONS);
             mSwapVolumeButtons.setChecked(Settings.System.getInt(resolver,
                    Settings.System.SWAP_VOLUME_BUTTONS, 0) != 0);
-//
-//          mVolumeKeyCursorControl = (ListPreference) findPreference(VOLUME_KEY_CURSOR_CONTROL);
-//          if (mVolumeKeyCursorControl != null) {
-//              mVolumeKeyCursorControl.setValue(Integer.toString(Settings.System.getInt(
-//                      getContentResolver(), Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0)));
-//              mVolumeKeyCursorControl.setSummary(mVolumeKeyCursorControl.getEntry());
-//              mVolumeKeyCursorControl.setOnPreferenceChangeListener(this);
-//          }
-//
+
+          mVolumeKeyCursorControl = (ListPreference) findPreference(KEY_VOLUME_KEY_CURSOR_CONTROL);
+          if (mVolumeKeyCursorControl != null) {
+              int cursorControlAction = Settings.System.getInt(resolver,
+                    Settings.System.VOLBTN_CURSOR_CONTROL, 0);
+            mVolumeKeyCursorControl = initActionList(KEY_VOLUME_KEY_CURSOR_CONTROL,
+                    cursorControlAction);
+              }
         } else {
             prefScreen.removePreference(volumeCategory);
         }
@@ -547,14 +548,14 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
                     Settings.System.HARDWARE_KEYS_DISABLE, 0) == 1;
             updateDisableHWKeyEnablement(harwareKeysDisable);
             return true;
-//        } else if (preference == mVolumeKeyCursorControl) {
-//            String volumeKeyCursorControl = (String) newValue;
-//            int val = Integer.parseInt(volumeKeyCursorControl);
-//            Settings.System.putInt(getContentResolver(),
-//                    Settings.System.VOLUME_KEY_CURSOR_CONTROL, val);
-//            int index = mVolumeKeyCursorControl.findIndexOfValue(volumeKeyCursorControl);
-//            mVolumeKeyCursorControl.setSummary(mVolumeKeyCursorControl.getEntries()[index]);
-//            return true;
+        } else if (preference == mVolumeKeyCursorControl) {
+            String volumeKeyCursorControl = (String) newValue;
+            int val = Integer.parseInt(volumeKeyCursorControl);
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.VOLBTN_CURSOR_CONTROL, val);
+            int index = mVolumeKeyCursorControl.findIndexOfValue(volumeKeyCursorControl);
+            mVolumeKeyCursorControl.setSummary(mVolumeKeyCursorControl.getEntries()[index]);
+            return true;
         } else if (preference == mBackPressAction) {
             int value = Integer.valueOf((String) newValue);
             int index = mBackPressAction.findIndexOfValue((String) newValue);
@@ -791,6 +792,14 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
 
     private boolean isOmniSwitchInstalled() {
         return PackageUtils.isAvailableApp(OmniSwitchConstants.APP_PACKAGE_NAME, getActivity());
+    }
+
+    private ListPreference initActionList(String key, int value) {
+        ListPreference list = (ListPreference) getPreferenceScreen().findPreference(key);
+        list.setValue(Integer.toString(value));
+        list.setSummary(list.getEntry());
+        list.setOnPreferenceChangeListener(this);
+        return list;
     }
 
     public static final Indexable.SearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
