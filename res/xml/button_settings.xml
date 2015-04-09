@@ -53,7 +53,7 @@
             android:key="button_volume_music_control"
             android:title="@string/button_volume_music_control_title"
             android:summary="@string/button_volume_music_control_summary"
-            android:persistent="false"/>
+            android:persistent="false"/> -->
 
         <ListPreference
             android:key="volume_key_cursor_control"
@@ -61,7 +61,7 @@
             android:dialogTitle="@string/volume_key_cursor_control_title"
             android:title="@string/volume_key_cursor_control_title"
             android:entries="@array/volume_key_cursor_control_entries"
-            android:entryValues="@array/volume_key_cursor_control_values" /> -->
+            android:entryValues="@array/volume_key_cursor_control_values" /> 
 
         <CheckBoxPreference
             android:key="swap_volume_buttons"
