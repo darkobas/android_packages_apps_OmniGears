@@ -24,12 +24,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
 
 import com.android.settings.SettingsPreferenceFragment;
 
 public class LockscreenSettings extends SettingsPreferenceFragment {
     public static final int IMAGE_PICK = 1;
-    public static final int SET_KEYGUARD_WALLPAPER = 2;
 
     private static final String KEY_WALLPAPER_SET = "lockscreen_wallpaper_set";
     private static final String KEY_WALLPAPER_CLEAR = "lockscreen_wallpaper_clear";
@@ -53,6 +53,8 @@ public class LockscreenSettings extends SettingsPreferenceFragment {
             return true;
         } else if (preference == mClearWallpaper) {
             clearKeyguardWallpaper();
+            Toast.makeText(getView().getContext(), getString(R.string.reset_lockscreen_wallpaper),
+            Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -68,11 +70,8 @@ public class LockscreenSettings extends SettingsPreferenceFragment {
                 intent.putExtra("keyguardMode", "1");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setData(uri);
-                startActivityForResult(intent, SET_KEYGUARD_WALLPAPER);
+                startActivity(intent);
             }
-        }
-        if (requestCode == SET_KEYGUARD_WALLPAPER && resultCode == Activity.RESULT_OK) {
-            finish();
         }
     }
 
