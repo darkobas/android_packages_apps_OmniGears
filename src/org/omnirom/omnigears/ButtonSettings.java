@@ -775,6 +775,7 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
         list.setSummary(list.getEntry());
         list.setOnPreferenceChangeListener(this);
         return list;
+    }
 
     private void doOmniSwitchConfig() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
