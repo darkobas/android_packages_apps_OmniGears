@@ -50,7 +50,7 @@ import com.android.internal.util.omni.PackageUtils;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.omnirom.omnigears.ui.ColorPickerPreference;
+import org.omnirom.omnigears.ui.CyanoColorPickerPreference;
 
 public class StatusbarBatterySettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener, Indexable {
@@ -62,7 +62,7 @@ public class StatusbarBatterySettings extends SettingsPreferenceFragment impleme
 
     private ListPreference mBatteryStyle;
     private ListPreference mBatteryPercent;
-    private ColorPickerPreference mChargingColor;
+    private CyanoColorPickerPreference mChargingColor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,7 @@ public class StatusbarBatterySettings extends SettingsPreferenceFragment impleme
         mBatteryPercent.setSummary(mBatteryPercent.getEntry());
         mBatteryPercent.setOnPreferenceChangeListener(this);
 
-        mChargingColor = (ColorPickerPreference) prefScreen.findPreference(STATUSBAR_CHARGING_COLOR);
+        mChargingColor = (CyanoColorPickerPreference) prefScreen.findPreference(STATUSBAR_CHARGING_COLOR);
         // TODO 0xFFFFFFFF is not really the default - but the config value R.color.batterymeter_charge_color is not exposed
         int chargingColor = Settings.System.getInt(resolver, Settings.System.STATUSBAR_BATTERY_CHARGING_COLOR, 0xFFFFFFFF);
         mChargingColor.setColor(chargingColor);

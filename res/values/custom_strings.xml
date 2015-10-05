@@ -19,6 +19,8 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
     <!-- Hardware keys -->
     <string name="button_keys_title">Keys</string>
     <string name="keys_bindings_title">Key actions</string>
